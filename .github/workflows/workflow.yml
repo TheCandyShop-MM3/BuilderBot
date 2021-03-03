@@ -1,0 +1,87 @@
+name: Running botas
+ 
+on: push
+
+env:
+  TYPE: build
+  TZ: Europe/Madrid
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 525600
+
+    steps:
+       - name: Checkouts
+         uses: actions/checkout@master
+         
+       - name: Initializing environmentss
+         continue-on-error: true
+         timeout-minutes: 100
+         run: |
+            sudo apt-get install expect
+            docker rmi `docker images -q`
+            sudo rm -rf /usr/share/dotnet /etc/mysql /etc/php /etc/apt/sources.list.d
+            sudo apt-get -y purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* 
+            sudo apt-get autoremove
+            sudo apt-get -y autoremove --purge
+            sudo apt-get clean 
+            sudo apt-get remove account-plugin-facebook account-plugin-flickr account-plugin-jabber account-plugin-salut account-plugin-twitter account-plugin-windows-live account-plugin-yahoo aisleriot brltty duplicity empathy empathy-common example-content gnome-accessibility-themes gnome-contacts gnome-mahjongg gnome-mines gnome-orca gnome-screensaver gnome-sudoku gnome-video-effects gnomine landscape-common libreoffice-avmedia-backend-gstreamer libreoffice-base-core libreoffice-calc libreoffice-common libreoffice-core libreoffice-draw libreoffice-gnome libreoffice-gtk libreoffice-impress libreoffice-math libreoffice-ogltrans libreoffice-pdfimport libreoffice-style-galaxy libreoffice-style-human libreoffice-writer libsane libsane-common mcp-account-manager-uoa python3-uno rhythmbox rhythmbox-plugins rhythmbox-plugin-zeitgeist sane-utils shotwell shotwell-common telepathy-gabble telepathy-haze telepathy-idle telepathy-indicator telepathy-logger telepathy-mission-control-5 telepathy-salut totem totem-common totem-plugins printer-driver-brlaser printer-driver-foo2zjs printer-driver-foo2zjs-common printer-driver-m2300w printer-driver-ptouch printer-driver-splix
+            git config --global user.name "ddeekuu"
+            git config --global user.email "secrets.EMAILGIT"
+
+       - name: Setup 2.00 and sed
+         continue-on-error: true
+         timeout-minutes: 10
+         run: |
+            git clone --recurse-submodules https://${{ secrets.USERNAME }}":${{ secrets.GITTOKEN }}"@github.com/rui-ports/ErfanGSIs.git
+            sudo chmod -R 0777 ErfanGSIs
+            sudo bash ErfanGSIs/setup.sh
+
+       - name: Generate value
+         continue-on-error: true
+         timeout-minutes: 1
+         run: |
+             java -jar BoboBot.jar
+         
+       - name: Add values
+         continue-on-error: true
+         timeout-minutes: 1
+         run: |
+              rm -rf configs/config.prop
+              cd configs
+              touch config.prop
+              echo "bot-token=${{ secrets.TOKEN }}" >> "config.prop"
+              echo "bot-username=dekugsi_bot" >> "config.prop"
+              echo "bot-master=1466802293","491338939" >> "config.prop"
+              echo '["1466802293","491338939","240538001","150733036","955266688"]' >> allowed2port.json
+             
+       - name: Run bobobot
+         continue-on-error: true
+         timeout-minutes: 340
+         run: sudo java -jar BoboBot.jar
+         
+       - name: Loop workflow
+         continue-on-error: true
+         timeout-minutes: 1
+         run: |
+              cd tmp/BuilderBot
+              echo "1" >> push.txt
+              git add .
+              git commit -m "(looop)"
+              
+       - name: Reruns
+         continue-on-error: true
+         timeout-minutes: 5
+         run: |
+              cd tmp/BuilderBot
+              sudo apt-get install expect -y
+              expect -c "
+              spawn git push -f 
+              expect \"Username\"
+              send \"ddeekuu\r\"
+              expect \"Password\"
+              send \"${{ secrets.PASSWORD }}\r\"
+              expect \"master -> master\"
+              set timeout -10
+              interact"
+       
