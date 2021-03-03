@@ -33,7 +33,7 @@ jobs:
          continue-on-error: true
          timeout-minutes: 10
          run: |
-            git clone --recurse-submodules https://${{ secrets.USERNAME }}":${{ secrets.GITTOKEN }}"@github.com/rui-ports/ErfanGSIs.git
+            git clone --recurse-submodules https://github.com/TheCandyShop-MM3/ErfanGSIs-TheCandyShop ErfanGSIs
             sudo chmod -R 0777 ErfanGSIs
             sudo bash ErfanGSIs/setup.sh
 
@@ -53,6 +53,7 @@ jobs:
               echo "bot-token=${{ secrets.TOKEN }}" >> "config.prop"
               echo "bot-username=mm3_gsi_bot" >> "config.prop"
               echo "bot-master=1466802293" >> "config.prop"
+              echo "bot-announcement-id=-1001372562542" >> sf-creds.config
              
        - name: Run bobobot
          continue-on-error: true
