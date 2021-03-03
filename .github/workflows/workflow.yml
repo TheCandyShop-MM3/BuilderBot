@@ -52,7 +52,7 @@ jobs:
               touch config.prop
               echo "bot-token=${{ secrets.TOKEN }}" >> "config.prop"
               echo "bot-username=dekugsi_bot" >> "config.prop"
-              echo "bot-master=1466802293","491338939" >> "config.prop"
+              echo "bot-master=1466802293" >> "config.prop"
               echo '["1466802293","491338939","240538001","150733036","955266688"]' >> allowed2port.json
              
        - name: Run bobobot
