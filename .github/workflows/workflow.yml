@@ -1,4 +1,4 @@
-name: Running botas
+name: Running Builder
  
 on: push
 
@@ -51,9 +51,8 @@ jobs:
               cd configs
               touch config.prop
               echo "bot-token=${{ secrets.TOKEN }}" >> "config.prop"
-              echo "bot-username=dekugsi_bot" >> "config.prop"
+              echo "bot-username=mm3_gsi_bot" >> "config.prop"
               echo "bot-master=1466802293" >> "config.prop"
-              echo '["1466802293","491338939","240538001","150733036","955266688"]' >> allowed2port.json
              
        - name: Run bobobot
          continue-on-error: true
