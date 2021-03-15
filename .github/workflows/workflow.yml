@@ -52,7 +52,7 @@ jobs:
               touch config.prop
               echo "bot-token=${{ secrets.TOKEN }}" >> "config.prop"
               echo "bot-username=dekugsi_bot" >> "config.prop"
-              echo "bot-master=1466802293" >> "config.prop"
+              echo "bot-master=1466802293","491338939" >> "config.prop"
               echo "bot-sf-pass=${{ secrets.SF_PASS }}" >> sf-creds.config
               echo "bot-sf-proj=mm3-gsi-tests" >> sf-creds.config
               echo "bot-sf-user=dekunya" >> sf-creds.config
@@ -60,7 +60,7 @@ jobs:
               echo "bot-sf-host=frs.sourceforge.net" >> sf-creds.config
               echo "bot-send-announcement=true" >> sf-creds.config
               echo '["1466802293","491338939","240538001","150733036","955266688"]' >> allowed2port.json
-             
+
        - name: Run bobobot
          continue-on-error: true
          timeout-minutes: 340
